@@ -1,9 +1,9 @@
 #include<bits/stdc++.h>
 #include<windows.h>
 #include<conio.h>
-#define screen_width 90
-#define screen_height 29
-#define window_width 70
+#define screen_width 120
+#define screen_height 33
+#define window_width 100
 
 using namespace std;
 
@@ -23,19 +23,19 @@ char car2[4][4] = { ' ','-','-',' ',
  					' ','-','-',' ',
 					'-','-','-','-'};
 
-char car3[4][4] = { ' ','*','*',' ',
-	 		   	    '*','*','*','*',
- 					' ','*','*',' ',
-					'*','*','*','*'};
+char car3[4][4] = { ' ','|','|',' ',
+	 		   	    '|','|','|','|',
+ 					' ','|','|',' ',
+					'|','|','|','|'};
 
 char car4[4][4] = { ' ','#','#',' ',
 	 		   	    '#','#','#','#',
  					' ','#','#',' ',
 					'#','#','#','#'};
 
-char car5[4][4] = { ' ','*','*',' ',
+char car5[4][4] = { ' ','|','|',' ',
 	 		   	    '+','+','+','+',
- 					' ','*','*',' ',
+ 					' ','|','|',' ',
 					'+','+','+','+'};
 
 char car6[4][4] = { ' ','#','#',' ',
@@ -65,19 +65,7 @@ void printcar(char car[4][4],int x, int y) {
 
     }
 }
-int choosecar(){
-    system("cls");
-    gotoxy(10,5);cout<<"\t\t\t-------------------------- ";
-	gotoxy(10,6);cout<<"\t\t\t|      Choose A Car      | ";
-	gotoxy(10,7);cout<<"\t\t\t--------------------------";
-    gotoxy(5,9);cout << "1."<<endl; printcar(car1,5,10);
-    gotoxy(20,9);cout << "2."<<endl;printcar(car2,20,10);
-    gotoxy(35,9);cout << "3."<<endl;printcar(car3,35,10);
-    gotoxy(50,9);cout << "4."<<endl;printcar(car4,50,10);
-    gotoxy(65,9);cout << "5."<<endl;printcar(car5,65,10);
-    gotoxy(80,9);cout << "6."<<endl;printcar(car6,80,10);
-    gotoxy(10,15); cout << "Select A Car: ";
-    char choosen = getche();
+int choosecar(char choosen){
     if (choosen =='1'){
         for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 4; j++) {
@@ -126,14 +114,8 @@ int choosecar(){
     }
     return 1;
     }
-    else{
-        cout << endl;
-        gotoxy(10,17);cout <<"Invalid choice. Choose again"<< endl;
-        gotoxy(10,19);cout << "Press Any Key To Continue"<<endl;
-        getch();
-    }
     return 0;
-
+	
 }
 
 void setcursor(bool visible, DWORD size) {
@@ -147,6 +129,7 @@ void setcursor(bool visible, DWORD size) {
 }
 
 void Border(){
+	SetConsoleTextAttribute(console, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 	for(int i=0; i<screen_height; i++){
 		for(int j=0; j<18; j++){
 			gotoxy(0+j,i);
@@ -155,23 +138,40 @@ void Border(){
 			 cout<<"*";
 		}
 	}
-	for(int i=0; i<screen_height; i++){
-		gotoxy(screen_width,i);
- 		cout<<"*";
-	}
+	SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
-
+	
 void genEnemy(int index){
-	enemy_X[index] = 17 + rand()%(33);
+	enemy_X[index] = 17 + rand()%(54);
 }
 
 void Enemy(int index){
 	if( enemyFlag[index]== true ){
-		gotoxy(enemy_X[index] , enemy_Y[index]);    cout<<"****";
-		gotoxy(enemy_X[index] , enemy_Y[index]+1);  cout<<" ** ";
-		gotoxy(enemy_X[index] , enemy_Y[index]+2);	cout<<"****";
-		gotoxy(enemy_X[index] , enemy_Y[index]+3);  cout<<" ** ";
+		if(index == 0){
+		SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_INTENSITY);
+		gotoxy(enemy_X[index] , enemy_Y[index]);    cout<<"####";
+		gotoxy(enemy_X[index] , enemy_Y[index]+1);  cout<<" ## ";
+		gotoxy(enemy_X[index] , enemy_Y[index]+2);	cout<<"####";
+		gotoxy(enemy_X[index] , enemy_Y[index]+3);  cout<<" ## ";
+		SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		}
+		else if(index == 1){
+		SetConsoleTextAttribute(console, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		gotoxy(enemy_X[index] , enemy_Y[index]);    cout<<"++++";
+		gotoxy(enemy_X[index] , enemy_Y[index]+1);  cout<<" || ";
+		gotoxy(enemy_X[index] , enemy_Y[index]+2);	cout<<"++++";
+		gotoxy(enemy_X[index] , enemy_Y[index]+3);  cout<<" || ";
+		SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		}
 
+        else{
+		SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		gotoxy(enemy_X[index] , enemy_Y[index]);    cout<<"++++";
+		gotoxy(enemy_X[index] , enemy_Y[index]+1);  cout<<" ** ";
+		gotoxy(enemy_X[index] , enemy_Y[index]+2);	cout<<"++++";
+		gotoxy(enemy_X[index] , enemy_Y[index]+3);  cout<<" ** ";
+		SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		}
 	}
 }
 
@@ -181,12 +181,20 @@ void eraseEnemy(int index){
 		gotoxy(enemy_X[index] , enemy_Y[index]+1);		cout<<"    ";
 		gotoxy(enemy_X[index] , enemy_Y[index]+2);		cout<<"    ";
 		gotoxy(enemy_X[index] , enemy_Y[index]+3);		cout<<"    ";
-		gotoxy(window_width -40, 0);  cout<<"     ||     ";
-		gotoxy(window_width -40, 5);  cout<<"     ||     ";
-		gotoxy(window_width -40, 10); cout<<"     ||     ";
-		gotoxy(window_width -40, 15); cout<<"     ||     ";
-		gotoxy(window_width -40, 20); cout<<"     ||     ";
-		gotoxy(window_width -40, 25); cout<<"     ||     ";
+		gotoxy(window_width -37, 0);  cout<<"     ||     ";
+		gotoxy(window_width -37, 5);  cout<<"     ||     ";
+		gotoxy(window_width -37, 10); cout<<"     ||     ";
+		gotoxy(window_width -37 , 15); cout<<"     ||     ";
+		gotoxy(window_width -37, 20); cout<<"     ||     ";
+		gotoxy(window_width -37, 25); cout<<"     ||     ";
+		gotoxy(window_width -37, 30); cout<<"     ||     ";
+        gotoxy(window_width -72, 0);  cout<<"     ||     ";
+		gotoxy(window_width -72, 5);  cout<<"     ||     ";
+		gotoxy(window_width -72, 10); cout<<"     ||     ";
+		gotoxy(window_width -72, 15); cout<<"     ||     ";
+		gotoxy(window_width -72, 20); cout<<"     ||     ";
+		gotoxy(window_width -72, 25); cout<<"     ||     ";
+		gotoxy(window_width -72, 30); cout<<"     ||     ";
 	}
 }
 
@@ -197,29 +205,35 @@ void resetEnemy(int index){
 }
 
 void Car(){
+	SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
-			gotoxy(j+carposition, i+22);  cout<<car[i][j];
+			gotoxy(j+carposition, i+26);  cout<<car[i][j];
 		}
 	}
+	SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void eraseCar(){
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
-			gotoxy(j+carposition, i+22);  cout<<" ";
+			gotoxy(j+carposition, i+26);  cout<<" ";
 		}
 	}
 }
 
 int collision(){
-	if( enemy_Y[0] + 4 >=23){
+	if( enemy_Y[0] + 4 >=27){
 		if(enemy_X[0] + 4 -carposition >=0 && enemy_X[0] + 4 -carposition <8){
 			return 1;
 		}
 	}
-	if(enemy_Y[1] + 4 >=23){
+	if(enemy_Y[1] + 4 >=27){
         if(enemy_X[1] + 4 -carposition >=0 && enemy_X[1] + 4 -carposition <8)
+            return 1;
+	}
+    if(enemy_Y[2] + 4 >=27){
+        if(enemy_X[2] + 4 -carposition >=0 && enemy_X[2] + 4 -carposition <8)
             return 1;
 	}
 	return 0;
@@ -227,10 +241,18 @@ int collision(){
 
 void gameover(){
 	system("cls");
+    SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_INTENSITY);
+    cout <<"\t #####     #    #     # #######    ####### #     # ####### ######     ###\n"; 
+    cout <<"\t#     #   # #   ##   ## #          #     # #     # #       #     #    ###\n"; 
+    cout <<"\t#        #   #  # # # # #          #     # #     # #       #     #    ###\n"; 
+    cout <<"\t#  #### #     # #  #  # #####      #     # #     # #####   ######      #\n"; 
+    cout <<"\t#     # ####### #     # #          #     #  #   #  #       #   #          \n"; 
+    cout <<"\t#     # #     # #     # #          #     #   # #   #       #    #     ### \n";
+    cout <<"\t #####  #     # #     # #######    #######    #    ####### #     #    ###\n";
 	cout<<endl;
-	cout<<"\t\t\t----------------------------"<<endl;
-	cout<<"\t\t\t--------- Game Over --------"<<endl;
-	cout<<"\t\t\t----------------------------"<<endl<<endl;
+	cout<<endl;
+    SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	
 	if(score>highest_score){
         highest_score = score;
         cout<<"\t\tCongratulations! You Created A New High Score!"<<endl<<endl;
@@ -242,43 +264,24 @@ void gameover(){
 
 void updateScore(){
 	gotoxy(window_width +7, 5);
-	cout<<"Score: "<<score<<endl;
+	cout<<"\tScore: "<<score<<endl;
 }
 
-void instructions(){
-	system("cls");
-	cout<<"Instructions";
-	cout<<"\n-----------------";
-	cout<<"\n Avoid car by moving left or right.";
-	cout<<"\n\n Press 'Arrow Keys' or 'A and D' to move the Car";
-	cout<<"\n\n Press 'x' to Exit";
-	cout<<"\n\n Press any Key to go back to the menu";
-	getch();
-}
-
-void play(){
+void play(int n){
 	carposition = -1 + window_width/2;
 	score = 0;
 	enemyFlag[0] = 1;
 	enemyFlag[1] = 0;
-	enemy_Y[0] = enemy_Y[1] = 1;
+    enemyFlag[2] = 0;
+	enemy_Y[0] = enemy_Y[1] = enemy_Y[2] = 1;
 
 	system("cls");
 	Border();
 	updateScore();
 	genEnemy(0);
 	genEnemy(1);
-
-	gotoxy(window_width +7, 2); cout<<"Car Game";
-	gotoxy(window_width +6, 4); cout<<"----------";
-	gotoxy(window_width +6, 6); cout<<"----------";
-	gotoxy(window_width +2, 7); cout<<"Highest Score: "<<highest_score<<endl;
-	gotoxy(window_width +7, 12); cout<<"Control ";
-	gotoxy(window_width +7, 13); cout<<"-------- ";
-	gotoxy(window_width +2, 14); cout<<"A Key - Left";
-	gotoxy(window_width +2, 15); cout<<"D Key - Left";
-	gotoxy(window_width +2, 15); cout<<"Left Arrow";
-	gotoxy(window_width +2, 14); cout<<"Right Ket";
+    genEnemy(2);
+	gotoxy(window_width +4, 7); cout<<"\tHighest Score: "<<highest_score<<endl;
 
 	gotoxy(18, 5);cout<<"Press any key to start";
 	getch();
@@ -292,7 +295,7 @@ void play(){
 					carposition -= 4;
 			}
 			if( ch=='d' || ch=='D' || ch== 77 ){
-				if( carposition < 50 )
+				if( carposition < 77 )
 					carposition += 4;
 			}
 			if(ch=='x' || ch=='X'){
@@ -303,24 +306,34 @@ void play(){
 		Car();
 		Enemy(0);
 		Enemy(1);
+        Enemy(2);
 		if( collision() ==1 ){
 			gameover();
 			return ;
 		}
-		Sleep(50);
+		Sleep(n);
 		eraseCar();
 		eraseEnemy(0);
 		eraseEnemy(1);
+        eraseEnemy(2);
 
-		if( enemy_Y[0] == 10 )
+		if( enemy_Y[0] == 10 ){
 			if( enemyFlag[1] == 0 )
 				enemyFlag[1] = 1;
+        }
+        if( enemy_Y[1] == 10 ){
+			if( enemyFlag[2] == 0 )
+				enemyFlag[2] = 1;
+        }
 
 		if( enemyFlag[0] == 1 )
 			enemy_Y[0] += 1;
 
 		if( enemyFlag[1] == 1 )
 			enemy_Y[1] += 1;
+
+        if( enemyFlag[2] == 1 )
+			enemy_Y[2] += 1;
 
 		if( enemy_Y[0] > screen_height-4 ){
 			resetEnemy(0);
@@ -332,9 +345,65 @@ void play(){
 			score++;
 			updateScore();
 		}
+        if( enemy_Y[2] > screen_height-4 ){
+			resetEnemy(2);
+			score++;
+			updateScore();
+        }
 	}
 }
 
+void diff(int n){
+    system("cls");
+gotoxy(10,10); cout<<"\t\t    Please Choose a Car Below to Continue";
+		gotoxy(5,15);cout << "    1."<<endl; 
+		{SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			printcar(car1,9,16);
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);}
+		gotoxy(20,15);cout << "    2."<<endl;{
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			printcar(car2,24,16);
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);}
+		gotoxy(35,15);cout << "    3."<<endl;{
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			printcar(car3,39,16);
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);}
+		gotoxy(50,15);cout << "    4."<<endl;{
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			printcar(car4,54,16);
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);}
+		gotoxy(65,15);cout << "    5."<<endl;{
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			printcar(car5,69,16);
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);}
+		gotoxy(80,15);cout << "    6."<<endl;{
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+			printcar(car6,84,16);
+			SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);}
+		gotoxy(5,21); cout << "Select A Car: ";
+        char choosen = getche();
+        if(choosecar(choosen))
+			play(n);
+        else{cout << endl;
+        gotoxy(10,25);cout <<"Invalid choice. Choose again"<< endl;
+        gotoxy(10,26);cout << "Press Any Key To Continue"<<endl;
+        getch();
+        }
+}
+
+
+void drawLogo() {
+	SetConsoleTextAttribute(console, FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	cout<<endl;
+	cout<<"\t #####     #    ######     ######     #     #####  ### #     #  #####       #####     ###### \n"; 
+	cout<<"\t#     #   # #   #     #    #     #   # #   #     #  #  ##    # #     #     #     #    #     #\n"; 
+	cout<<"\t#        #   #  #     #    #     #  #   #  #        #  # #   # #                 #    #     #\n"; 
+	cout<<"\t#       #     # ######     ######  #     # #        #  #  #  # #  ####      #####     #     #\n"; 
+	cout<<"\t#       ####### #   #      #   #   ####### #        #  #   # # #     #     #          #     #\n"; 
+	cout<<"\t#     # #     # #    #     #    #  #     # #     #  #  #    ## #     #     #          #     #\n"; 
+ 	cout<<"\t #####  #     # #     #    #     # #     #  #####  ### #     #  #####      ####### ## ###### \n";
+	SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+}
 
 int main(){
 	setcursor(0,0);
@@ -342,25 +411,27 @@ int main(){
 
 	do{
 		system("cls");
-		gotoxy(10,5); cout<<" -------------------------- ";
-		gotoxy(10,6); cout<<" |        Car Game        | ";
-		gotoxy(10,7); cout<<" --------------------------";
-		gotoxy(10,9); cout<<"1. Start Game";
-		gotoxy(10,10); cout<<"2. Instructions";
-		gotoxy(10,11); cout<<"3. Quit";
-		gotoxy(10,13); cout<<"Select option: ";
-		char option = getche();
+ 		drawLogo();
+        gotoxy(10,10);cout<<"\t\t    Select Level";
+        gotoxy(10,12);cout<<"\t\t1. Easy";
+        gotoxy(10,13);cout<<"\t\t2. Medium";
+        gotoxy(10,14);cout<<"\t\t3. Hard";
+        gotoxy(32,30); cout<<"-----Press X to Quit-----";
+        char ch = getche();
 
-		if( option == '1'){
-        if(choosecar())
-			play();
+		if(ch == '1'){
+			diff(50);
 		}
-		else if( option =='2'){
-			instructions();
-		}
-		else if( option == '3'){
-			exit(0);
-		}
+		else if(ch == '2'){
+            diff(40);
+        }
+        else if(ch == '3'){
+            diff(30);
+        }
+        else if(ch == 'x' || ch == 'X'){
+            system("cls");
+            exit(0);
+        }
 
 	}while(1);
 
